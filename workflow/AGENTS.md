@@ -6,7 +6,9 @@ project. Copy `workflow/` into the research repository's root and place this fil
 `workflow/roles/` add role-specific duties.
 
 **Goal:** the lowest official Phase-1 `val_bpb` by 2026-09-30 23:59 PDT (**2026-10-01 12:29 IST**).
-Internal research freeze is 2026-09-29 18:00 IST. Top 10 advances to Phase 2; first place is the prize.
+**Best stack decided by 2026-09-27 23:00 IST; research freeze 2026-09-28 12:00 IST** (final package
+ready). The days after that are buffer for submission and one retry. Top 10 advances to Phase 2; first
+place is the prize.
 **Metric we select on:** fresh-process public eval at context 1024 over 20,971,520 tokens ("public-20M").
 Best estimate: official ≈ public-20M − 0.001 (±0.002, from one pair). The +0.005 rule applies to the 2M
 prefix only.
@@ -262,7 +264,8 @@ validation data; mechanisms that only win at 300 steps.
 | Sep 25 ~03:00 | Table decision #1 (two-host) |
 | Sep 25 ~10:00–12:00 | S0 package (cleaned 116188, numerics-identical) ready for the human |
 | Sep 26 evening | S1 package if a table stack is adopted and clean-ported (≥0.004 better than S0) |
-| Sep 28 12:00 | Final stack confirmation (two hosts × 2 replicates); S2 package |
-| Sep 29 06:00 | No new mechanisms; replicates and cold replays only |
-| Sep 29 18:00 | Freeze: final package complete |
-| Sep 30 ≤12:00 | Recommended human submission time (leaves room for one retry). Hard deadline Oct 1 12:29 IST |
+| Sep 27 12:00 | **No new mechanisms after this.** Only replicates, stacking of already-adopted wins, and cold replays |
+| Sep 27 23:00 | **Best stack decided:** two hosts × 2 replicates confirmed; the Porter's clean port already in progress |
+| Sep 28 12:00 | **Freeze:** S2 package complete (clean-port equivalence, 2 cold replays, audit) |
+| Sep 28 evening | Recommended human submission of S2 |
+| Sep 29–30 | Buffer only: a retry or resubmission if anything fails. Hosts run confirmation replicates, nothing new. Hard deadline Oct 1 12:29 IST |

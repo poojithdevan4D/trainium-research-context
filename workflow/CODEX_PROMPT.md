@@ -25,11 +25,14 @@ the scarcest resource we have. One rule break can disqualify the team.
 - **Stretch milestones.** Report crossing them; never fake them:
   - public ≤ 0.980 by Sep 25 23:00 IST;
   - ≤ 0.975 by Sep 26 23:00 IST;
-  - ≤ 0.960 by Sep 28 12:00 IST;
+  - ≤ 0.960 by Sep 27 23:00 IST;
   - ≤ 0.945 by the freeze.
-- **Dates (IST):**
-  - Internal research freeze: **Sep 29 18:00**.
-  - Recommended human submission: by **Sep 30 12:00**.
+- **Dates (IST).** We want the best result early and a buffer after it:
+  - Last new mechanism launched: **Sep 27 12:00**.
+  - Best stack decided (two hosts × 2 replicates): **Sep 27 23:00**.
+  - Research freeze, with the S2 package complete: **Sep 28 12:00**.
+  - Recommended human submission: **Sep 28 evening**.
+  - Sep 29–30 is buffer only, for a retry or resubmission.
   - Hard deadline: **Oct 1 12:29** (Sep 30 23:59 PDT).
 - **Where gains should come from**, as the evidence ranks them:
   1. hashed n-gram value tables. They gave −0.015 to −0.030 on the old stack but have never run on the
@@ -364,8 +367,12 @@ config such as `host-cold.json`. Cold startup must be ≤ 840 s.
   - Prove equivalence: G2 on both files, `--compare` reporting `identical: true`, and a Neuron lockstep.
   - Two cold replays, both at least 0.004 better than S0.
   - An audit.
-- **S2 (package by Sep 28 12:00):** the best confirmed stack at the freeze. It needs two hosts × 2
-  replicates. From Sep 29 06:00 there are no new mechanisms, only replicates and cold replays.
+- **S2 (package by Sep 28 12:00):** the best confirmed stack.
+  - It needs two hosts × 2 replicates, decided by Sep 27 23:00.
+  - From Sep 27 12:00 there are no new mechanisms, only replicates, stacking of adopted wins, and cold
+    replays.
+  - Start the clean port as soon as the stack's direction is clear, not after the decision.
+  - After Sep 28 12:00, hosts run confirmation replicates only.
 
 ## 8. Research lane: where new gains come from
 

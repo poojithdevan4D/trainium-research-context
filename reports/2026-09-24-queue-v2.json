@@ -547,11 +547,13 @@
       "content": "best confirmed stack at freeze",
       "package_by_ist": "2026-09-28T12:00+05:30",
       "submit_window_ist": [
-        "2026-09-29T18:00+05:30",
-        "2026-09-30T12:00+05:30"
+        "2026-09-28T18:00+05:30",
+        "2026-09-29T12:00+05:30"
       ],
       "hard_deadline_ist": "2026-10-01T12:29+05:30",
-      "human_only": true
+      "human_only": true,
+      "decide_best_stack_by_ist": "2026-09-27T23:00+05:30",
+      "no_new_mechanisms_after_ist": "2026-09-27T12:00+05:30"
     }
   ],
   "parked": [
@@ -596,6 +598,11 @@
       "utc": "2026-09-24T15:00Z",
       "item": "IMPL-2, IMPL-3",
       "status": "implemented in research-v2 (c5c410af...); T1-T5 CPU proofs pass; needs Verifier + Neuron smoke"
+    },
+    {
+      "utc": "2026-09-24T17:00Z",
+      "item": "timeline",
+      "status": "pulled earlier on request: no new mechanisms after Sep 27 12:00 IST, best stack decided Sep 27 23:00, freeze + S2 package Sep 28 12:00, human submission Sep 28 evening; Sep 29-30 buffer"
     }
   ],
   "workflow": "workflow/AGENTS.md (Codex runbook), workflow/START_HERE.md"
