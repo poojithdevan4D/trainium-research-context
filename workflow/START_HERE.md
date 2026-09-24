@@ -24,6 +24,14 @@
 | **ana** | "You are the Analyst. Follow workflow/roles/analyst.md. Annotate verdicts, run evaluator-only diagnostics, write the six-hour summaries." |
 | **port** | "You are the Porter. Follow workflow/roles/porter.md. First job: S0 (numerics-identical cleanup of 116188)." |
 
+## Files the sessions use
+- Research file for every Track-A arm: `workflow/proposals/research-v2/train.py` (SHA-256 `c5c410af…`).
+  Deploy it at `submissions/research_v2/train.py` next to the organizer `prepare.py`.
+- Submission candidate S0: `workflow/candidates/S0/` (bare launch command; see its `EVIDENCE.md`).
+- Host runner: `workflow/tools/run_job.py`. Copy `workflow/templates/host.json` to
+  `research/v2/host.json` on each host, set `host`, `archive_dir` and the G1-verified `eval_args`, then
+  set `eval_args_verified: true`.
+
 ## First 6 hours (what should happen without you)
 1. **op:** G1 receipt (prepare.py facts, shard counts). Then A0 controls on both hosts.
 2. **ver:** verify IMPL-1 (`workflow/proposals/IMPL-1/`). **op:** Neuron smoke on the IMPL-1 bytes.

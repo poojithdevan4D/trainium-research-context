@@ -65,6 +65,10 @@ workflow/roles/{supervisor,researcher,implementer,verifier,operator,analyst,port
 workflow/tools/preflight_dryrun.py      # G2: exact argv through train.py's own __main__ on CPU/gloo x4
 workflow/tools/decide.py                # verdicts + control drift (rules v2-2026-09-24)
 workflow/tools/contained.py             # launch/stop/quiesce with descendant tagging (+cgroup)
+workflow/tools/run_job.py               # ONE job end to end on a host (preflight..archive), receipts + ledger + verdict
+workflow/tools/test_run_job.sh          # end-to-end self-test of run_job.py with fake train/eval (no Neuron)
+workflow/proposals/research-v2/         # research file for all Track-A arms (35c9 + IMPL-1/2/3, default-off)
+workflow/candidates/S0/                 # review-clean dense submission candidate + EVIDENCE.md
 workflow/templates/*.json               # proposal, run record, verdict, submission package
 research/v2/queue.json                  # approved, ordered jobs (seeded from reports/2026-09-24-queue-v2.json)
 research/v2/ledger.jsonl                # append-only run records (schema: templates/run-record.json)
@@ -78,6 +82,14 @@ Checkpoints never go into Git. They go to the content-addressed archive `archive
 the record stores the hash and URI.
 
 ## 3. The run lifecycle (every job, no exceptions)
+
+**On the host, steps 4–11 are one command:**
+`python workflow/tools/run_job.py --host-config research/v2/host.json --job research/v2/experiments/<label>/job.json`
+(templates: `workflow/templates/host.json`, `workflow/templates/job.json`). It refuses to start without a
+PASS G2 receipt for the exact bytes and argv, and it refuses until `eval_args_verified` is set from the G1
+receipt. Exit codes: 0 done; 3 containment breaker; 4 preflight refused; 5 training failed; 6 eval failed;
+7 archive failed. Re-run `workflow/tools/test_run_job.sh` after any change to the tools.
+
 
 | # | Step | Command / artifact | Gate |
 |---|---|---|---|
@@ -225,6 +237,7 @@ validation data; mechanisms that only win at 300 steps.
 ## 9. Alerts, summaries, breakers
 
 - **Alert immediately:**
+  - a record with non-empty `anomalies` (containment had to stop a straggler);
   - a milestone crossed;
   - ADOPT_PENDING_HUMAN_ACK, HOLD, or submission-ready;
   - any correctness failure (NaN, over-budget, causality, dirty git, hash mismatch, survivors, neuron holders);

@@ -14,7 +14,14 @@ interpret results.
    id.
 5. The G2 receipt exists for exactly these bytes and argv and says PASS.
 
-## Launch, collect, evaluate
+## Default path: one command per job
+`python workflow/tools/run_job.py --host-config research/v2/host.json --job research/v2/experiments/<label>/job.json`
+It performs the preflight, contained launch, wait, quiescence proof, summary parsing, contained 20M eval,
+ledger record, `decide.py` verdict and checkpoint archive, and writes every receipt. Commit the
+experiment directory and the ledger afterwards. Exit code 3 is a breaker: stop and alert the human. Use
+the manual steps below only if `run_job.py` itself is being debugged.
+
+## Launch, collect, evaluate (manual equivalent)
 - Launch: `contained.py launch --label L --dir research/v2/experiments/L --cgroup -- env NEURON_LOGICAL_NC_CONFIG=2 torchrun --standalone --nproc_per_node=4 train.py <argv> --out-dir out/L`.
 - Collect: `contained.py wait`, then `contained.py quiesce --files out/L/final.pt research/v2/experiments/L/run.log`.
   If it exits 3: `contained.py stop`, quiesce again; if it still fails, open a breaker and alert.

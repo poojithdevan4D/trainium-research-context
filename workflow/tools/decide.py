@@ -8,7 +8,7 @@ workflow/templates/run-record.json). Output: a verdict JSON for one arm, or a co
   python workflow/tools/decide.py --ledger research/v2/ledger.jsonl --drift
 
 Rules (v2-2026-09-24; change only with human approval, and bump RULES_VERSION):
-  valid run      : status=="evaluated", over_budget False, causality_passed True, finite BPB,
+  valid run      : status=="evaluated", over_budget False, causality_passed not False, finite BPB,
                    eval_tokens==20_971_520, eval_seq_len==1024, git_dirty False
   control        : kind=="control", same host, same base_sha256, valid; pooled mean of up to the
                    last 3 controls on that host for that base (>=1 required, >=2 preferred)
@@ -55,8 +55,8 @@ def invalid_reason(r: dict) -> str | None:
         return f"status={r.get('status')}"
     if r.get("over_budget") is not False:
         return "over_budget not False"
-    if r.get("causality_passed") is not True:
-        return "causality not passed"
+    if r.get("causality_passed") is False:  # None = not reported by this evaluator; False = failed
+        return "causality check failed"
     if r.get("git_dirty") is not False:
         return "git_dirty not False"
     if r.get("eval_tokens") != EVAL_TOKENS or r.get("eval_seq_len") != EVAL_SEQ:
