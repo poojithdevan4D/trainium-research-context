@@ -1,5 +1,8 @@
 # Start here: running the autonomous workflow with Codex
 
+**Fastest start:** paste `workflow/CODEX_PROMPT.md` (everything below its line) into the first Codex
+session. It walks Codex through the setup, gates, run loop and submission track below.
+
 ## One-time setup (≈30 min, human)
 1. Copy `workflow/` into the research repo root, and copy `workflow/AGENTS.md` to `AGENTS.md` at the repo
    root.

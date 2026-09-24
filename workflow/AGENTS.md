@@ -61,6 +61,7 @@ prefix only.
 
 ```
 workflow/AGENTS.md                      # this file (also copy to repo root)
+workflow/CODEX_PROMPT.md                # master prompt to paste into Codex sessions (goal, phases, roles)
 workflow/roles/{supervisor,researcher,implementer,verifier,operator,analyst,porter}.md
 workflow/tools/preflight_dryrun.py      # G2: exact argv through train.py's own __main__ on CPU/gloo x4
 workflow/tools/decide.py                # verdicts + control drift (rules v2-2026-09-24)
