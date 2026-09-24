@@ -1,6 +1,9 @@
 # Start here: running the autonomous workflow with Codex
 
-**Fastest start:** paste `workflow/CODEX_PROMPT.md` (everything below its line) into the first Codex
+**Final-week controller:** paste `workflow/CONTROLLER_PROMPT.md` into the controlling Codex session.
+It covers the current blockers, the loop, priorities and the status format.
+
+**Full setup:** paste `workflow/CODEX_PROMPT.md` (everything below its line) into the first Codex
 session. It walks Codex through the setup, gates, run loop and submission track below.
 
 ## One-time setup (≈30 min, human)
