@@ -19,8 +19,8 @@ controls, ledger, replicates, checksums and audits. Those checks exist because:
 - there are 5 submissions per week and no retries;
 - an automated LLM code reviewer screens every submission, and it rejected our last one.
 
-The goal is the lowest `val_bpb` from a `train.py` that finishes in budget and passes review. The
-Phase-1 top 10 advance to Phase 2.
+**The goal is to beat every team on the board**, with the lowest `val_bpb` of any `train.py` that
+finishes in budget and passes review. Top 10 is the floor we must protect, not the target.
 
 ## Scoreboard
 
@@ -38,11 +38,30 @@ Phase-1 top 10 advance to Phase 2.
   | **10th (cutoff)** | competitive larping | **0.9824** |
 
   Our best accepted score is 1.0246, which is not in the top 10.
-- **Target:** official ≤ 0.980. That is public-20M ≤ ≈0.981; ≤ 0.978 is safer, because places 7–10 sit
-  within 0.008 of each other and teams are still improving.
-  - That needs about −0.011 from our best. The flag bank alone can't reach it, so **tables are the
-    critical path**. Everything else supports them or stacks on top of them.
-  - S0 (≈0.991) doesn't reach the top 10. Its value is proving that a clean file passes review.
+- **Target ladder (official).** Report each rung as it is crossed:
+
+  | Rung | Official score | Public-20M ≈ | Gap from our best |
+  |---|---|---|---|
+  | **Beat 1st place (the goal)** | < 0.9464 | < 0.947 | ≈ −0.045 |
+  | Top 3 | ≤ 0.960 | ≤ 0.961 | ≈ −0.031 |
+  | Top 5 | ≤ 0.969 | ≤ 0.970 | ≈ −0.022 |
+  | **Top 10 (the floor; protect it)** | ≤ 0.980 (≤ 0.978 safer) | ≤ 0.981 | ≈ −0.011 |
+
+- **What that gap implies.** A −0.045 gap is not closed by tweaks: the flag bank gives about −0.0005
+  per flag. Winning needs **step changes**, each worth ≥ 0.01. Hunt for them first, and stack them:
+  1. **Data.** Our hosts may hold fewer training shards than an official `prepare.py setup`. If so,
+     the whole "data wall" (1.7 passes over the data, with the second pass hurting) is an artifact of
+     our setup, and the best recipe changes completely. Check this first (G1 below).
+  2. **Tables at scale.** They gave −0.015 on the last layer and −0.030 total on the old stack. Then
+     scale toward the Recursive recipe: all VE layers, a larger table multiplier, and K=2
+     multi-hash, with the B2 touched-row update to keep it fast.
+  3. **More tokens per second.** This pays only once the data question is settled (new unique data,
+     or D1 showing that extra steps help).
+  4. **Recipe transplants from the strongest public reference** (Recursive), one change at a time,
+     on top of adopted tables: warmdown 0.9–0.95, NorMuon, cautious WD, the attention window
+     pattern.
+  5. **Model shape once tables are in:** depth 8 × 768 (SC-1), plus a width or depth bracket.
+- S0 (≈0.991) reaches none of the rungs. Its value is proving that a clean file passes review.
 - **Your two health metrics**, in this order:
   1. **Host idle minutes**, target near zero: `trn21` and `trn22` each run one job at a time, always.
   2. **Valid completed runs per day**, each with a same-host control and a verdict.
@@ -141,6 +160,14 @@ otherwise, and flag the difference once.
 
 ## Experiment priority (fixed unless results say otherwise)
 
+0. **G1 data check, today.** It takes 15 minutes, is read-only, and could matter more than anything
+   else.
+   - Read `prepare.py` for the default `--num-train-shards` and what a default `setup` downloads.
+   - Count the train shards and row groups on trn21 and trn22.
+   - If the hosts hold fewer than the default, tell me at once, with the disk space the full set
+     needs. Fetching it means running `prepare.py setup`, which only uses the provided data, but
+     likely needs the EBS resize first.
+   - Every conclusion about the data wall depends on this answer.
 1. **S0 safety floor:** two cold replays, an audit (also check that it fixes the reason our earlier
    submission was rejected), then the package.
 2. **Tables:** A2 (layers 1 and −1) on trn22 and A1 (last layer) on trn21, then cross-host
@@ -152,15 +179,19 @@ otherwise, and flag the difference once.
    - D1, the epoch-value diagnostic.
 4. **Flag bank** on the current base: matrix LR 0.0175 and 0.0125, warmdown 0.85, embedding LR 0.45,
    sandwich norm, WD 0.35, final LR fraction 0.
-5. **Panel ideas** (local-conv ordering, QKV-norm CSE, LM-head/CE memory) come after D1:
+5. **Big-swing lane.** Once tables are running, give up to one-third of host time to step-change
+   candidates from the list above. Each is still one causal change, verified, and has a control. Its
+   proposal must name the expected Δ (≥ 0.01) and the evidence for it.
+6. **Panel ideas** (local-conv ordering, QKV-norm CSE, LM-head/CE memory) come after D1:
    - Speed only pays if D1 shows extra steps help.
    - A "pure refactor" must be proven bit-identical with `preflight_dryrun.py --compare`. If it isn't,
      it's a quality experiment with its own control.
 
 ## Use the budget where the bottleneck is
 
-- **Bedrock ideation:** cut to one cycle every 3–4 hours (about 50 calls a day). Ideas are not the
-  bottleneck.
+- **Bedrock ideation:** cut to one cycle every 3–4 hours (about 50 calls a day). Ask only for
+  **step-change** mechanisms: expected ≥ 0.01, backed by evidence, feasible on one Trn2 chip in
+  1,800 s, and runnable before Sep 27 12:00. Micro-optimizations and tweaks are not wanted.
 - **Bedrock verification:** spend the freed budget here. Have Fable or Astra act as the independent
   verifier and failure diagnostician for every code change and every failed run.
 - Before any proposal reaches the queue, reject it if:
