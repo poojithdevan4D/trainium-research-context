@@ -711,6 +711,28 @@ while quota remains.
 
 ---
 
+## Addendum (2026-09-24 12:50 UTC): claims now verified by execution
+
+The G2 harness (`workflow/tools/preflight_dryrun.py`) runs the exact `train.py` bytes and argv through the file's
+own `__main__` path (install adapters, then `main()`) on CPU/gloo with 4 ranks, for real training steps. Receipts
+are in `workflow/evidence/`.
+
+| Claim in §2.3 | Execution result |
+|---|---|
+| A1/A2 fail on exact 35c9 | **FAIL confirmed** at `make_plan` (full size and m8): `g2-a1-35c9.json`, `g2-a2-35c9.json` |
+| `--relu2-tau 0.5` fails | **FAIL confirmed** (adapter assert): `g2-relu2-35c9.json` |
+| Width 1152 / MLP ratio 5 fail | **FAIL confirmed** (SBUF assert): `g2-w1152-35c9.json`, `g2-mlp5-35c9.json` |
+| Sandwich norm, head gate, x0 gate, out-pool, depth 8×768, epoch-shuffle, WD/LR/warmdown flags run | **PASS** (receipts `g2-*-35c9.json`) |
+| Clean 116188 has no arithmetic drift against 35c9 + dense flags | **Bit-identical over 3 steps** (plan, losses, 62/62 parameter hashes): `lockstep3-35c9-vs-116188-base.json`. The research argv is **rejected** by the clean file (`--matrix-lr`), so the launch strings differ |
+| IMPL-1 unblocks tables without changing anything else | `--no-ngram-ve` bit-identical to 35c9 over 3 steps; A1/A2 (m8) PASS; exactly one RMSProp update per step; float64 recomputation within BF16 rounding (`workflow/proposals/IMPL-1/`) |
+
+New lead (hypothesis, §4 A-eps): at step 1 the median touched table-gradient element is about 6e-10 with 2,048
+tokens/step, against RMSProp ε = 1e-10. At 131,072 tokens/step, rare-row gradients should be about 64× smaller,
+so table updates may be ε-dominated early in training. Check the gradient statistics in the IMPL-1 Neuron smoke
+before queueing A-eps.
+
+The autonomous Codex workflow built on these tools is in `workflow/AGENTS.md` and `workflow/START_HERE.md`.
+
 ## Appendix A: answers to the 17 questions (index)
 
 | # | Answer |
