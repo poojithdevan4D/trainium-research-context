@@ -28,6 +28,21 @@ Phase-1 top 10 advance to Phase 2.
   is better. Official ≈ public-20M − 0.001.
 - **Best confirmed:** 0.991835, with a two-run mean of 0.991954. Nothing newer is confirmed. Ideas,
   predictions, smokes and 2M screens never count as improvements.
+- **Live leaderboard** (official; read from the board on Sep 25 IST):
+
+  | Place | Team | Score |
+  |---|---|---|
+  | 1st | Them Bones | 0.9464 |
+  | 8th | Eldrun | 0.9763 |
+  | 9th | Yuntian Deng | 0.9778 |
+  | **10th (cutoff)** | competitive larping | **0.9824** |
+
+  Our best accepted score is 1.0246, which is not in the top 10.
+- **Target:** official ≤ 0.980. That is public-20M ≤ ≈0.981; ≤ 0.978 is safer, because places 7–10 sit
+  within 0.008 of each other and teams are still improving.
+  - That needs about −0.011 from our best. The flag bank alone can't reach it, so **tables are the
+    critical path**. Everything else supports them or stacks on top of them.
+  - S0 (≈0.991) doesn't reach the top 10. Its value is proving that a clean file passes review.
 - **Your two health metrics**, in this order:
   1. **Host idle minutes**, target near zero: `trn21` and `trn22` each run one job at a time, always.
   2. **Valid completed runs per day**, each with a same-host control and a verdict.
