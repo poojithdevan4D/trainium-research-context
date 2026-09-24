@@ -121,8 +121,13 @@ and `workflow/evidence/`):
 - Best confirmed: dense 6×1024, matrix LR 0.015, public-20M **0.99195** (two runs). Clean file `116188…`
   is bit-identical to 35c9 with the dense flags over 3 CPU training steps (`lockstep3-35c9-vs-116188-base.json`).
 - Exact 35c9 **cannot** run A1/A2 tables, `--relu2-tau`, `--n-embd 1152` or `--mlp-ratio 5` (G2 FAIL
-  receipts). **IMPL-1** (`workflow/proposals/IMPL-1/`) unblocks tables. It is CPU-verified and needs a
-  Verifier receipt plus a Neuron smoke.
+  receipts). **Use the research-v2 file** (`workflow/proposals/research-v2/train.py`, SHA-256 `c5c410af…`)
+  for every Track-A arm. It is 35c9 plus IMPL-1 (table unblock), IMPL-2 (`--ngram-ve-freeze-epoch`) and
+  IMPL-3 (`--fresh-tail-frac`, `--requeue-identity`), all default-off and CPU-proven bit-identical to
+  35c9 at default. It still needs a Verifier receipt plus a Neuron smoke.
+- **S0** (`workflow/candidates/S0/`, SHA-256 `ad223cdc…`, bare launch command) is the review-clean dense
+  submission candidate, proven numerics-identical to 116188 on CPU. Its remaining gates are in its
+  `EVIDENCE.md`.
 - Dense trains about 1.7 epochs with the whole second epoch inside the LR cooldown. On the old stack, steps
   past the epoch boundary hurt. The value of extra steps for dense is **unknown** until D1 runs.
 

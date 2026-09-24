@@ -146,7 +146,7 @@ def aggregate(ns, train_py, prepare_dir, train_argv, ranks, rc, timed_out, elaps
         ckpt = r0.get("checkpoint_check", {})
         if mism:
             verdict, reason = "FAIL", f"{len(mism)} parameters differ across ranks after the steps"
-        elif stale:
+        elif stale and not ns.allow_unchanged_tables:
             verdict, reason = "FAIL", f"{len(stale)} n-gram tables did not change"
         elif not ckpt.get("ok"):
             verdict, reason = "FAIL", f"checkpoint/load_for_eval check failed: {ckpt.get('error')}"
@@ -479,6 +479,7 @@ def main() -> int:
     p.add_argument("--out", default="")
     p.add_argument("--keep", action="store_true")
     p.add_argument("--trace-rmsprop", action="store_true")
+    p.add_argument("--allow-unchanged-tables", action="store_true", help="expected when testing a table freeze")
     p.add_argument("--worker", action="store_true")
     ns = p.parse_args(own)
     if ns.worker:

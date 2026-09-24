@@ -7,7 +7,9 @@
   "base_files": {
     "35c9": "35c9ef799fa983bc65eabaacb2b7c4918c9838b7d41c7c1cdd338a93e19be3c2",
     "116188_clean": "116188cfb1b9b52ee9bb7222a683c899a32cb26ec7c1e13f1f20b2496229534d",
-    "35c9_plus_IMPL1": "9e5dce344674b8217d8749ca3e2ce8c1961a73a9c10c1c6759f645a62ed66783 (pending Verifier receipt)"
+    "35c9_plus_IMPL1": "9e5dce344674b8217d8749ca3e2ce8c1961a73a9c10c1c6759f645a62ed66783 (pending Verifier receipt)",
+    "research_v2": "c5c410afef8269850aaea01f5b986b522dc0bf5f76f9a64953f8daf1288db586 (35c9+IMPL-1+IMPL-2+IMPL-3, all default-off; workflow/proposals/research-v2/)",
+    "S0_clean": "ad223cdc9aa339d820b8f66e32ad35e30d3e93437a79d263a1418f7e53e125bb (workflow/candidates/S0/; bare launch)"
   },
   "eval": {
     "fresh_process": true,
@@ -90,7 +92,8 @@
     {
       "id": "IMPL-2",
       "task": "Epoch-2 table freeze flag (skip table update and table all-reduce once loader epoch >= 2)",
-      "conditional": true
+      "conditional": true,
+      "status": "implemented in workflow/proposals/research-v2/ (CPU-verified)"
     },
     {
       "id": "IMPL-3",
@@ -99,7 +102,8 @@
         "first-N batch hashes of identity order equal prepare.make_dataloader",
         "no val shard",
         "token accounting logged"
-      ]
+      ],
+      "status": "implemented in workflow/proposals/research-v2/ (CPU-verified)"
     }
   ],
   "queue": [
@@ -582,6 +586,16 @@
       "utc": "2026-09-24T12:50Z",
       "item": "clean-port equivalence",
       "status": "116188 is bit-identical to 35c9+dense flags over 3 CPU training steps (workflow/evidence/lockstep3-35c9-vs-116188-base.json); NKI/Neuron paths not exercised on CPU"
+    },
+    {
+      "utc": "2026-09-24T15:00Z",
+      "item": "S0",
+      "status": "built + CPU-proven identical to 116188 (training lockstep and eval logits); needs Neuron lockstep, 2 cold replays, audit"
+    },
+    {
+      "utc": "2026-09-24T15:00Z",
+      "item": "IMPL-2, IMPL-3",
+      "status": "implemented in research-v2 (c5c410af...); T1-T5 CPU proofs pass; needs Verifier + Neuron smoke"
     }
   ],
   "workflow": "workflow/AGENTS.md (Codex runbook), workflow/START_HERE.md"
