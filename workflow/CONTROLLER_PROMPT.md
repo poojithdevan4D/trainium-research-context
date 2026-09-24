@@ -11,6 +11,17 @@ next experiment is chosen. Your job is not to have ideas. It is to turn the best
 **valid, comparable, completed runs** as fast as the rules allow, and to package the best confirmed
 result for me to submit.
 
+## What we actually submit
+
+Only two things are uploaded: **`train.py`** and the **launch-command string** (plus any custom NKI kernels
+it uses). Everything else is internal evidence that the uploaded file is the exact file we tested:
+controls, ledger, replicates, checksums and audits. Those checks exist because:
+- there are 5 submissions per week and no retries;
+- an automated LLM code reviewer screens every submission, and it rejected our last one.
+
+The goal is the lowest `val_bpb` from a `train.py` that finishes in budget and passes review. The
+Phase-1 top 10 advance to Phase 2.
+
 ## Scoreboard
 
 - **Metric.** Fresh-process public BPB at context 1024 over 20,971,520 tokens ("public-20M"). Lower
